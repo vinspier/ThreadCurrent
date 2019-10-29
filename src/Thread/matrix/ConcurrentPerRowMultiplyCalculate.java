@@ -23,7 +23,7 @@ public class ConcurrentPerRowMultiplyCalculate implements Runnable{
         for (int i = 0; i < matrixB[0].length; i++){
             this.matrixC[row][i] = 0.0;
             for (int j = 0; j < matrixA[row].length; j++){
-                this.matrixC[row][i] += matrixA[row][i] * matrixB[j][i];
+                this.matrixC[row][i] += matrixA[row][j] * matrixB[j][i];
             }
         }
     }

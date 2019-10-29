@@ -24,7 +24,7 @@ public class ConcurrentMultiplyCalculate implements Runnable{
     @Override
     public void run() {
         this.matrixC[row][column] = 0.0;
-        for (int k = 0; k < column; k++){
+        for (int k = 0; k < this.matrixA[row].length; k++){
             this.matrixC[row][column] += matrixA[row][k] * matrixB[k][column];
         }
 
