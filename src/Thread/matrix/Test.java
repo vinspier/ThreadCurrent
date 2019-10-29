@@ -1,14 +1,16 @@
 package Thread.matrix;
 
+import java.util.Arrays;
+
 public class Test {
     private static double[][] matrixA = MatrixGenerator.generate(500,2000);
-    private static double[][] matrixB = MatrixGenerator.generate(2000,200);
+    private static double[][] matrixB = MatrixGenerator.generate(2000,2000);
     private static double[][] matrixC = new double[500][200];
 
     public static void main(String[] args) {
-        testSerial();
-        testConcurrent();
-        testConcurrentPerRow();
+        //testSerial();
+       // testConcurrent();
+       // testConcurrentPerRow();
     }
 
     public static void testSerial(){
