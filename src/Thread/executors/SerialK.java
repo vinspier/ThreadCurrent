@@ -34,7 +34,8 @@ public class SerialK {
         for (Sample origin : dataSet){
             Distance distance = new Distance();
             distance.setIndex(index);
-            distance.setDistance(DistanceCalculaor.calculate(origin,target));
+            distance.setDistance(DistanceCalculator.calculate(origin,target));
+            distanceList.add(distance);
             index++;
         }
 

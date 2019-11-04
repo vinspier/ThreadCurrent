@@ -60,12 +60,12 @@ public class RandomUtil {
      * @param count
      * @return
      */
-    public static List<Sample> getDataSet(int count){
+    public static List<Sample> getDataSet(int count,int len){
         List<Sample> dataSet = new ArrayList<>();
         for (int i = 0; i < count; i++){
             Sample sample = new Sample();
             sample.setTag(getTag());
-            sample.setPoints(getPoints(4));
+            sample.setPoints(getPoints(len));
             dataSet.add(sample);
         }
         return dataSet;

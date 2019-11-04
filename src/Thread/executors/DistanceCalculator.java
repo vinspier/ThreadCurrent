@@ -7,9 +7,9 @@ package Thread.executors;
  * @Date: 2019/10/29 16:56
  * @Version V1.0
  **/
-public class DistanceCalculaor {
+public class DistanceCalculator {
 
-    private DistanceCalculaor() {
+    private DistanceCalculator() {
     }
 
     public static double calculate(Sample origin,Sample target){
