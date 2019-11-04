@@ -26,44 +26,21 @@ public class SerialK {
      */
     public String classify(Sample target){
         List<Distance> distanceList = new ArrayList<>();
-        Map<String, Integer> resultMap = new HashMap<>();
+
         int index = 0;
         /**
-         * 遍历计算目标点与续联集合点的距离
+         * 遍历计算目标点与续联集合点的距离(串行计算)
          */
         for (Sample origin : dataSet){
             Distance distance = new Distance();
             distance.setIndex(index);
+            /** 计算距离这一步可通过多线程 并行处理 */
             distance.setDistance(DistanceCalculator.calculate(origin,target));
             distanceList.add(distance);
             index++;
         }
 
-        /**
-         * 对计算好的距离集合进行排序
-         */
-        Collections.sort(distanceList,new Comparator<Distance>() {
-            @Override
-            public int compare(Distance o1, Distance o2) {
-                if (o1.getDistance() - o2.getDistance() > 0){
-                    return 1;
-                }else if (o1.getDistance() - o2.getDistance() < 0){
-                    return -1;
-                }else {
-                    return 0;
-                }
-            }
-        });
-
-        /**
-         * 取指定的k个距离最近的值
-         */
-        for(int i = 0; i < k; i++){
-            Sample sample = dataSet.get(distanceList.get(i).getIndex());
-            String tag = sample.getTag();
-            resultMap.merge(tag,1,(a,b) -> a + b);
-        }
-        return Collections.max(resultMap.entrySet(),Map.Entry.comparingByValue()).getKey();
+       return DistanceCalculator.getK(distanceList,dataSet,k);
     }
 
 }
