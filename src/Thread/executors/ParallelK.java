@@ -51,7 +51,8 @@ public class ParallelK implements Runnable {
     }
 
     public String classify(Sample target) throws InterruptedException{
-        List<Distance> distanceList = new ArrayList<>(dataSet.size());
+       // List<Distance> distanceList = new ArrayList<>(dataSet.size());
+        Distance[] distances = new Distance[dataSet.size()];
         int increment = dataSet.size() / (executeTop - 1);
         /**
          * 遍历计算目标点与续联集合点的距离(串行计算)
@@ -59,7 +60,7 @@ public class ParallelK implements Runnable {
         int startIndex = 0;
         int endIndex = increment;
         for (int i = 0; i < executeTop - 1; i++){
-            ParallelCalculator task = new ParallelCalculator(dataSet,startIndex,endIndex,distanceList,target,countDownLatch);
+            ParallelCalculator task = new ParallelCalculator(dataSet,startIndex,endIndex,distances,target,countDownLatch);
             startIndex = endIndex;
             if (i < executeTop - 2){
                 endIndex += increment;
@@ -71,7 +72,7 @@ public class ParallelK implements Runnable {
         }
         countDownLatch.await();
         executor.shutdown();
-        return DistanceCalculator.getK(distanceList,dataSet,k);
+        return DistanceCalculator.getK(Arrays.asList(distances),dataSet,k);
     }
 
     public void destroy() {

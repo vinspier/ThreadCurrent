@@ -25,7 +25,7 @@ public class ParallelCalculator implements Runnable{
     /**
      * 计算结果的存放集合
      */
-    private final List<Distance> distanceList;
+    private final Distance[] distances;
 
     /**
      * 比对目标
@@ -37,11 +37,11 @@ public class ParallelCalculator implements Runnable{
      */
     private final CountDownLatch countDownLatch;
 
-    public ParallelCalculator(List<? extends Sample> dataSet, int start, int end, List<Distance> distanceList, Sample sample, CountDownLatch countDownLatch) {
+    public ParallelCalculator(List<? extends Sample> dataSet, int start, int end, Distance[] distances, Sample sample, CountDownLatch countDownLatch) {
         this.dataSet = dataSet;
         this.start = start;
         this.end = end;
-        this.distanceList = distanceList;
+        this.distances = distances;
         this.sample = sample;
         this.countDownLatch = countDownLatch;
     }
@@ -49,11 +49,10 @@ public class ParallelCalculator implements Runnable{
     @Override
     public void run() {
         for (int i = start; i < end; i++){
-            System.out.println(distanceList.size());
             Distance distance = new Distance();
             distance.setIndex(i);
             distance.setDistance(DistanceCalculator.calculate(dataSet.get(i),sample));
-            distanceList.set(i,distance);
+            distances[i] = distance;
         }
         countDownLatch.countDown();
         System.out.println("===========" + end);
