@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
  * @Date: 2019/11/4 14:09
  * @Version V1.0
  **/
-public class ParallelK implements Runnable {
+public class ParallelK {
 
     private final List<? extends Sample> dataSet;
 
@@ -42,12 +42,7 @@ public class ParallelK implements Runnable {
         this.basic = 1;
         this.executeTop = basic * Runtime.getRuntime().availableProcessors();
         this.executor = Executors.newFixedThreadPool(executeTop);
-        this.countDownLatch = new CountDownLatch(executeTop - 1);
-    }
-
-    @Override
-    public void run() {
-
+        this.countDownLatch = new CountDownLatch(executeTop);
     }
 
     public String classify(Sample target) throws InterruptedException{
@@ -59,13 +54,13 @@ public class ParallelK implements Runnable {
          */
         int startIndex = 0;
         int endIndex = increment;
-        for (int i = 0; i < executeTop - 1; i++){
+        for (int i = 0; i < executeTop; i++){
             ParallelCalculator task = new ParallelCalculator(dataSet,startIndex,endIndex,distances,target,countDownLatch);
             startIndex = endIndex;
             if (i < executeTop - 2){
                 endIndex += increment;
             }else {
-                /** 最后第二个线程执行剩余未分配的子任务 最后一个线程留给主线程 */
+                /** 最后一个线程执行剩余未分配的子任务 最后一个线程留给主线程 */
                 endIndex = dataSet.size();
             }
             executor.execute(task);
