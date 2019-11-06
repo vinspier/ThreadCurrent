@@ -43,4 +43,8 @@ public class NewsBuffer {
         });
     }
 
+    public News get() throws InterruptedException{
+       return buffer.take();
+    }
+
 }
