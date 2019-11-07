@@ -22,13 +22,14 @@ public class NewsProduce implements Runnable{
     @Override
     public void run() {
         System.out.println("start produce news");
-        for (int i = 0;i < times;i++){
+        for (int i = 0;i < 5;i++){
             News news = new News();
             news.setId(UUID.randomUUID().toString().replaceAll("-","").toUpperCase());
             news.setTag(UUID.randomUUID().toString().replaceAll("-","").substring(0,5));
             news.setContent(UUID.randomUUID().toString().replaceAll("-",""));
             news.setSource(UUID.randomUUID().toString().replaceAll("-",""));
             news.setTitle(UUID.randomUUID().toString().replaceAll("-",""));
+            System.out.println("-----------------" + "produce news: " + news.getId() + "-----------------");
             buffer.push(news);
         }
     }

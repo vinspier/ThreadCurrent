@@ -35,7 +35,6 @@ public class NewsSystem implements Runnable {
          */
         Thread newsConsumer =  new Thread(new NewsConsumer(buffer));
         newsConsumer.start();
-        int index = 0;
         while (!interrupt){
             NewsProduce newsProduce = new NewsProduce(random.nextInt(),buffer);
             try {
@@ -51,16 +50,17 @@ public class NewsSystem implements Runnable {
          */
         synchronized (this){
             try {
-                System.out.println("enter the synchronized method ===========================>>>>>>");
+                System.out.println("<<<<<< =========================== enter the synchronized method ===========================>>>>>>");
                 countDownLatch.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
         newsConsumer.interrupt();
-        System.out.println("stop the thread of newsConsumer");
+        System.out.println("<<<<<< =========================== stop the thread of newsConsumer ===========================>>>>>>");
         executor.shutdown();
-        System.out.println("shutdown the thread of executor");
+        System.out.println("<<<<<< =========================== shutdown the thread of executor ===========================>>>>>>");
+        System.out.println("所有任务结束");
     }
 
     public void shutdown(){
