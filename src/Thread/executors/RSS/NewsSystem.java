@@ -34,7 +34,7 @@ public class NewsSystem implements Runnable {
          * 开启消费线程
          */
         Thread newsConsumer =  new Thread(new NewsConsumer(buffer));
-        newsConsumer.start();
+        executor.submit(newsConsumer);
         while (!interrupt){
             NewsProduce newsProduce = new NewsProduce(random.nextInt(),buffer);
             try {
@@ -56,7 +56,6 @@ public class NewsSystem implements Runnable {
                 e.printStackTrace();
             }
         }
-        newsConsumer.interrupt();
         System.out.println("<<<<<< =========================== stop the thread of newsConsumer ===========================>>>>>>");
         executor.shutdown();
         System.out.println("<<<<<< =========================== shutdown the thread of executor ===========================>>>>>>");
