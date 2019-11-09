@@ -1,6 +1,5 @@
 package Thread.executors.RSS;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.RunnableScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 

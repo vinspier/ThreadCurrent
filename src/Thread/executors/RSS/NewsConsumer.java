@@ -13,6 +13,7 @@ public class NewsConsumer implements Runnable{
 
     @Override
     public void run() {
+        System.out.println("进入消费线程 开始从队列中获取数据");
         while (!Thread.currentThread().isInterrupted()){
             try {
                 News news = buffer.get();

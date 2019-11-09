@@ -31,18 +31,19 @@ public class ExecutorTask<V> extends FutureTask<V>  implements RunnableScheduled
 
     @Override
     public void run() {
-        if (isPeriodic() && !executor.isShutdown()){
+        boolean isPeriodic = isPeriodic();
+        if (isPeriodic && !executor.isShutdown()){
             super.run();
             Date now = new Date();
             startDate = now.getTime() + Timer.getPeriod();
             executor.getQueue().add(this);
-            System.out.println("Start Date: "+new Date(startDate));
+            System.out.println("Start Date: " + new Date(startDate));
         }
     }
 
     @Override
     public boolean isPeriodic() {
-        return task.isPeriodic();
+        return Timer.getPeriod() != 0;
     }
 
     @Override

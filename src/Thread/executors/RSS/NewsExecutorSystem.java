@@ -5,14 +5,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class NewsSystem implements Runnable {
+public class NewsExecutorSystem implements Runnable {
 
     /**
      * 生产新闻的最大次数
      */
     private final int times;
 
-    private final ScheduledThreadPoolExecutor executor;
+    private final NewsExecutor executor;
 
     private final NewsBuffer buffer;
 
@@ -20,10 +20,10 @@ public class NewsSystem implements Runnable {
 
     private boolean interrupt;
 
-    public NewsSystem(int times) {
+    public NewsExecutorSystem(int times) {
         this.interrupt = false;
         this.times = times;
-        this.executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors());
+        this.executor = new NewsExecutor(Runtime.getRuntime().availableProcessors());
         this.buffer = new NewsBuffer();
     }
 
@@ -33,15 +33,14 @@ public class NewsSystem implements Runnable {
         /**
          * 开启消费线程
          */
-       // Thread newsConsumer =  new Thread(new NewsConsumer(buffer));
-        NewsConsumer newsConsumer = new NewsConsumer(buffer);
-        executor.submit(newsConsumer);
+        Thread newsConsumer =  new Thread(new NewsConsumer(buffer));
+        newsConsumer.start();
+       // executor.submit(newsConsumer);
         while (!interrupt){
             NewsProduce newsProduce = new NewsProduce(random.nextInt(),buffer);
             try {
                 Thread.sleep(1000);
-               // executor.scheduleWithFixedDelay(newsProduce,0,5, TimeUnit.SECONDS);
-                executor.submit(newsProduce);
+                executor.schedule(newsProduce,0,TimeUnit.SECONDS);
             } catch (Exception e) {
 
             }
