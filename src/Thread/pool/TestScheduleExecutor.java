@@ -14,12 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class TestScheduleExecutor {
     public static void main(String[] args) {
         ScheduledExecutorService executorService = Executors.newScheduledThreadPool(2);
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("==========开始执行================");
-            }
-        };
+        Runnable runnable = () -> System.out.println("==========开始执行================");
         executorService.scheduleAtFixedRate(runnable,2,5, TimeUnit.SECONDS);
     }
 }

@@ -1,4 +1,4 @@
-package Thread.TaskReturnValue.parallel;
+package Thread.TaskReturnValue.task;
 
 import Thread.TaskReturnValue.common.BestMatchingData;
 import Thread.TaskReturnValue.common.LevenshteinDistance;

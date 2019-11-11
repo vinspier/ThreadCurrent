@@ -4,7 +4,9 @@ import Thread.TaskReturnValue.common.BestMatchingData;
 import Thread.TaskReturnValue.common.LevenshteinDistance;
 import Thread.TaskReturnValue.common.WordsLoader;
 import Thread.TaskReturnValue.parallel.ParallelMatchMultiple;
+import Thread.TaskReturnValue.parallel.ParallelMatchMultipleExist;
 import Thread.TaskReturnValue.parallel.ParallelMatchSingle;
+import Thread.TaskReturnValue.parallel.ParallelMatchSingleExist;
 import Thread.TaskReturnValue.serial.SerialMatch;
 
 public class Test {
@@ -16,6 +18,10 @@ public class Test {
         testParallelMatch("target");
         System.out.println("=======================");
         testParallelMultipleMatch("target");
+        System.out.println("=======================");
+        testParallelMatchSingleExist("target");
+        System.out.println("=======================");
+        testParallelMatchMultipleExist("target");
       // testDistance("zizzing","target");
     }
 
@@ -53,6 +59,13 @@ public class Test {
         matchingData.getMatchData().forEach(System.out::println);
     }
 
+    public static void testParallelMatchMultipleExist(String target) throws Exception{
+        System.out.println(ParallelMatchMultipleExist.find(target));
+    }
+
+    public static void testParallelMatchSingleExist(String target){
+        System.out.println(ParallelMatchSingleExist.find("target"));
+    }
 
     public static void testDistance(String source,String target){
         System.out.println(LevenshteinDistance.calculate(source,target));

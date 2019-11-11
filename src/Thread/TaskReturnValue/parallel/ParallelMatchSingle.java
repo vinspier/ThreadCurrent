@@ -2,6 +2,7 @@ package Thread.TaskReturnValue.parallel;
 
 import Thread.TaskReturnValue.common.BestMatchingData;
 import Thread.TaskReturnValue.common.WordsLoader;
+import Thread.TaskReturnValue.task.BestMatchingBasicTask;
 
 import java.io.IOException;
 import java.util.ArrayList;
