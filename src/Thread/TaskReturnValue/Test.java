@@ -60,15 +60,24 @@ public class Test {
     }
 
     public static void testParallelMatchMultipleExist(String target) throws Exception{
+        long start = System.currentTimeMillis();
         System.out.println(ParallelMatchMultipleExist.find(target));
+        long end = System.currentTimeMillis();
+        System.out.println("time took : " + (end - start) + " ms");
     }
 
     public static void testParallelMatchSingleExist(String target){
-        System.out.println(ParallelMatchSingleExist.find("target"));
+        long start = System.currentTimeMillis();
+        System.out.println(ParallelMatchSingleExist.find(target));
+        long end = System.currentTimeMillis();
+        System.out.println("time took : " + (end - start) + " ms");
     }
 
     public static void testDistance(String source,String target){
+        long start = System.currentTimeMillis();
         System.out.println(LevenshteinDistance.calculate(source,target));
+        long end = System.currentTimeMillis();
+        System.out.println("time took : " + (end - start) + " ms");
     }
 
 }

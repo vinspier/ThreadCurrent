@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -37,8 +38,25 @@ public class ParallelMatchMultipleExist {
         for (int i = 0; i < poolSize; i++){
             ExistBasicTask task = new ExistBasicTask(start,end,target,dictionary);
             tasks.add(task);
+            start = end;
+            if (i == poolSize - 1){
+                end = dictionary.size();
+            }else {
+                end += increment;
+            }
         }
-        return executor.invokeAny(tasks);
+        try {
+            Map<String,Object> result = executor.invokeAny(tasks);
+            return result;
+        }catch (ExecutionException e) {
+            if (e.getCause() instanceof NoSuchElementException){
+                e.printStackTrace();
+                throw e;
+            }
+            return null;
+        } finally {
+            executor.shutdown();
+        }
     }
 
 }

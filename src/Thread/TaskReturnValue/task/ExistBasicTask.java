@@ -5,6 +5,7 @@ import Thread.TaskReturnValue.common.LevenshteinDistance;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.Callable;
 
 /**
@@ -36,14 +37,18 @@ public class ExistBasicTask implements Callable<Map<String,Object>> {
         Map<String, Object> result = new HashMap<>();
         result.put("source",target);
         result.put("targetIndex",-1);
-        result.put("targer","");
+        result.put("target","");
         for (int i = start; i < end; i++){
             int distance = LevenshteinDistance.calculate(dictionary.get(i),target);
             if (distance == 0){
                 result.put("target",dictionary.get(i));
                 result.put("targetIndex",i);
+                return result;
             }
         }
-        return result;
+        if (Thread.currentThread().isInterrupted()){
+            return result;
+        }
+        throw new NoSuchElementException("the word :'" + target +  "' is not exists in the dictionary .");
     }
 }
