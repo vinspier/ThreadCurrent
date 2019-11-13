@@ -1,5 +1,6 @@
 package Thread.TaskReturnValue1;
 
+import Thread.TaskReturnValue1.parallel.ParallelMultipleIndex;
 import Thread.TaskReturnValue1.parallel.ParallelSingleIndex;
 import Thread.TaskReturnValue1.serial.SerialIndex;
 
@@ -10,8 +11,9 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Test {
     public static void main(String[] args) {
-         testSerialInvertedIndex();
-         testParallelSingle();
+      //   testSerialInvertedIndex();
+      //   testParallelSingle();
+        testParallelMultiple();
     }
 
     public static void testSerialInvertedIndex(){
@@ -25,6 +27,14 @@ public class Test {
     public static void testParallelSingle(){
         ParallelSingleIndex parallelSingleIndex = new ParallelSingleIndex();
         ConcurrentHashMap<String,ConcurrentLinkedDeque<String>> result = parallelSingleIndex.invertedIndex("resources/words");
+        for (Map.Entry<String,ConcurrentLinkedDeque<String>> value : result.entrySet()){
+            System.out.println(value.toString());
+        }
+    }
+
+    public static void testParallelMultiple(){
+        ParallelMultipleIndex parallelMultipleIndex = new ParallelMultipleIndex(2);
+        ConcurrentHashMap<String,ConcurrentLinkedDeque<String>> result = parallelMultipleIndex.invertedIndex("resources/words");
         for (Map.Entry<String,ConcurrentLinkedDeque<String>> value : result.entrySet()){
             System.out.println(value.toString());
         }
