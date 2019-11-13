@@ -27,7 +27,9 @@ public class SerialIndex {
             }
         }
         end = System.currentTimeMillis();
-        System.out.println("time took : " + (end - start) + " ms");
+        System.out.println("=================== time took ===================");
+        System.out.println(end - start + " ms");
+        System.out.println("=================== time took ===================");
         return invertedIndex;
     }
 

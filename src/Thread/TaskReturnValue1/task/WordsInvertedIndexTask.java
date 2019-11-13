@@ -28,7 +28,7 @@ public class WordsInvertedIndexTask implements Runnable{
                     DocumentData documentData = completionService.take().get();
                     refreshInvertedIndex(documentData.getWords(),invertedIndex,documentData.getFileName());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                  //  e.printStackTrace();
                     break;
                 }
             }
