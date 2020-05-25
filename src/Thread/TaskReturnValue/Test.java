@@ -9,24 +9,32 @@ import Thread.TaskReturnValue.parallel.ParallelMatchSingle;
 import Thread.TaskReturnValue.parallel.ParallelMatchSingleExist;
 import Thread.TaskReturnValue.serial.SerialMatch;
 
+import java.util.List;
+
 public class Test {
 
     public static void main(String[] args) throws Exception{
         //testWordsLoader();
-        testSerialMatch("target");
-        System.out.println("=======================");
-        testParallelMatch("target");
-        System.out.println("=======================");
-        testParallelMultipleMatch("target");
-        System.out.println("=======================");
-        testParallelMatchSingleExist("target");
-        System.out.println("=======================");
-        testParallelMatchMultipleExist("target");
+        testWordsLoader1();
+//        testSerialMatch("target");
+//        System.out.println("=======================");
+//        testParallelMatch("target");
+//        System.out.println("=======================");
+//        testParallelMultipleMatch("target");
+//        System.out.println("=======================");
+//        testParallelMatchSingleExist("target");
+//        System.out.println("=======================");
+//        testParallelMatchMultipleExist("target");
       // testDistance("zizzing","target");
     }
 
     public static void testWordsLoader() throws Exception{
         WordsLoader.load("resources/UKACD.txt");
+    }
+
+    public static void testWordsLoader1() throws Exception{
+       List<String> words = WordsLoader.load("C:/Users/RS170/Desktop/test.xls");
+       words.forEach(System.out::println);
     }
 
     public static void testSerialMatch(String target){
