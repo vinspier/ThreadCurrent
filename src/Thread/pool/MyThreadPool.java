@@ -32,7 +32,7 @@ public class MyThreadPool {
         Executors.newScheduledThreadPool(3).scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>");
+                System.out.println();
             }
         },
         6,
