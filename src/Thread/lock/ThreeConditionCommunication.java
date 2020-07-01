@@ -18,7 +18,7 @@ public class ThreeConditionCommunication {
 					@Override
 					public void run() {
 					
-						for(int i=1;i<=50;i++){
+						for(int i=1;i<=5;i++){
 							business.sub2(i);
 						}
 						
@@ -32,7 +32,7 @@ public class ThreeConditionCommunication {
 					@Override
 					public void run() {
 					
-						for(int i=1;i<=50;i++){
+						for(int i=1;i<=5;i++){
 							business.sub3(i);
 						}
 						
@@ -40,7 +40,7 @@ public class ThreeConditionCommunication {
 				}
 		).start();		
 		
-		for(int i=1;i<=50;i++){
+		for(int i=1;i<=5;i++){
 			business.main(i);
 		}
 		
@@ -84,7 +84,7 @@ public class ThreeConditionCommunication {
 						e.printStackTrace();
 					}
 				  }
-					for(int j=1;j<=20;j++){
+					for(int j=1;j<=10;j++){
 						System.out.println("sub3 thread sequence of " + j + ",loop of " + i);
 					}
 				  shouldSub = 1;
@@ -105,7 +105,7 @@ public class ThreeConditionCommunication {
 							e.printStackTrace();
 						}
 				  	}
-					for(int j=1;j<=100;j++){
+					for(int j=1;j<=10;j++){
 						System.out.println("main thread sequence of " + j + ",loop of " + i);
 					}
 					shouldSub = 2;
