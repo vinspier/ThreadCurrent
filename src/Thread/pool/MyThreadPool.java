@@ -5,7 +5,19 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MyThreadPool {
+
+    public static ExecutorService service = Executors.newFixedThreadPool(10);
+
     public static void main(String[] args) {
+       // service.execute(() -> System.out.println(1));
+        service.submit(() -> System.out.println(1));
+    }
+
+    public static void test1(){
+
+    }
+
+    public static void test(){
         ExecutorService service = Executors.newFixedThreadPool(5);//创建固定大小的线程池
         ExecutorService service1 = Executors.newSingleThreadExecutor();//创建单一线程池（线程死了 会自动重新启动)
         ExecutorService service2 = Executors.newCachedThreadPool();// 创建缓存线程池
@@ -30,12 +42,12 @@ public class MyThreadPool {
         System.out.println("----------------------------");
 
         Executors.newScheduledThreadPool(3).scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println();
-            }
-        },
-        6,
+                                                                    @Override
+                                                                    public void run() {
+                                                                        System.out.println();
+                                                                    }
+                                                                },
+                6,
                 2,
                 TimeUnit.SECONDS);
     }
