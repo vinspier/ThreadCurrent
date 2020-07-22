@@ -6,11 +6,21 @@ import java.util.concurrent.TimeUnit;
 
 public class MyThreadPool {
 
-    public static ExecutorService service = Executors.newFixedThreadPool(10);
+    public static ExecutorService service = Executors.newFixedThreadPool(1);
 
     public static void main(String[] args) {
        // service.execute(() -> System.out.println(1));
-        service.submit(() -> System.out.println(1));
+        for (int i = 0; i < 100; i++){
+            final int index = i;
+            service.submit(() -> {
+                try {
+                    Thread.sleep(5000);
+                    System.out.println(index);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
     }
 
     public static void test1(){

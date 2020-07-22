@@ -2,22 +2,31 @@ package Thread.Concurrent;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+/**
+ *
+ * 使用阻塞队列完成线程之间的同步关系
+ * */
 public class BlockingQueueCommunication {
     final static Business business = new Business();
 
     public static void main(String[] args) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    for (int i = 0; i < 20; i++) {
-                        business.method1(i);
-                    }
-                }
-            }).start();
-            for(int i=0;i<20;i++){
-                business.method2(i);
+        ExecutorService executorService = Executors.newCachedThreadPool();
+            for (int i = 0; i < 20; i++) {
+                int index = i;
+                executorService.submit(() -> {
+                    business.method1(index);
+                });
             }
+            for(int i=0;i<20;i++){
+                int index = i;
+                executorService.submit(() -> {
+                    business.method2(index);
+                });
+            }
+            executorService.shutdown();
     }
 }
 
@@ -39,9 +48,7 @@ class Business{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (int j=0;j<10;j++){
-            System.out.println("method1 task ---"+(j+1)+"第"+(i+1)+"次子线程");
-        }
+        System.out.println("method1 task --- 子线程 " + "第" + (i + 1) + "個任務");
         try {
             blockingQueue2.take();
         } catch (InterruptedException e) {
@@ -55,9 +62,7 @@ class Business{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (int j=0;j<5;j++){
-            System.out.println("method2 task ---"+(j+1)+"第"+(i+1)+"次主线程");
-        }
+        System.out.println("method2 task --- 主线程 "+  "第" + ( i + 1 ) + "個任務");
         try {
             blockingQueue1.take();
         } catch (InterruptedException e) {

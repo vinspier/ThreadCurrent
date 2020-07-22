@@ -35,5 +35,6 @@ public class MyExchanger {
                 }
             }
         });
+        executorService.shutdown();
     }
 }

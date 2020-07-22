@@ -2,29 +2,32 @@ package Thread.share;
 
 import java.util.Random;
 
+/**
+ * ThreadLocal 为当前线程创建副本变量
+ * 以当前线程 最为key
+ *
+ * */
 public class MyThreadLocal {
     private static ThreadLocal<ThreadShareData> threadLocal = new ThreadLocal<ThreadShareData>();
     public static void main(String[] args) {
-        for(int i=0;i<2;i++) {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     int data = new Random().nextInt();
-
-/**************************
-                  ThreadShareData threadShareData = new ThreadShareData();
-                    threadShareData.setName("name-"+data);
-                    threadShareData.setAge(data);
-                    threadLocal.set(threadShareData);
- *************************/
-
-                    ThreadShareData.getThreadShareData().setName("fxb"+data);
+                    ThreadShareData.getThreadShareData().setName("fxb" + data);
                     ThreadShareData.getThreadShareData().setAge(data);
                     new A().get();
-                    new B().get();
                 }
             }).start();
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int data = new Random().nextInt();
+                ThreadShareData.getThreadShareData().setName("fxb" + data);
+                ThreadShareData.getThreadShareData().setAge(data);
+                new B().get();
+            }
+        }).start();
     }
     static class A{
         public void get(){
