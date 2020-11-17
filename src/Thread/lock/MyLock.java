@@ -10,26 +10,25 @@ public class MyLock {
     }
 
     public void init(final PrintName printName){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        new Thread(() -> {
+            while(true){
                 try {
-                    Thread.sleep(4000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 printName.printName0("fxb1");
             }
         }).start();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+
+        new Thread(() -> {
+            while(true){
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                printName.printName("fxb2");
+                printName.printName0("fxb2");
             }
         }).start();
     }
@@ -38,10 +37,7 @@ public class MyLock {
         Lock lock = new ReentrantLock();
         // 使用sychronized 实现互斥
         public synchronized void printName0(String name){
-            for(int i=0;i<name.length();i++){
-                System.out.print(name.charAt(i));
-            }
-            System.out.println();
+            System.out.println(name);
             System.out.println("----------------");
         }
 
@@ -49,10 +45,7 @@ public class MyLock {
         public void printName(String name){
             lock.lock();
             try {
-                for(int i=0;i<name.length();i++){
-                    System.out.print(name.charAt(i));
-                }
-                System.out.println();
+                System.out.println(name);
                 System.out.println("----------------");
             } catch (Exception e) {
                 e.printStackTrace();
