@@ -13,9 +13,9 @@ public class MyReadWriteLock {
 
         executorService.execute(() -> {
             while(true){
-                // 没1.5s读取数据
+                // 每 2.5s 读取数据
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -23,26 +23,26 @@ public class MyReadWriteLock {
             }
         });
 
-        for(int i=0;i<2;i++){
-            executorService.execute(() -> {
-                while (true){
-                    // 没1.5s读取数据
-                    try {
-                        Thread.sleep(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    shareData.get();
-                }
-            });
-        }
+//        for(int i=0;i<2;i++){
+//            executorService.execute(() -> {
+//                while (true){
+//                    // 每 1s 读取数据
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    shareData.get();
+//                }
+//            });
+//        }
     }
 }
 
+//共享数据，只能有一个线程能写该数据，但可以有多个线程同时读该数据。
 class ShareData{
     private ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private Object data = null;
-    //共享数据，只能有一个线程能写该数据，但可以有多个线程同时读该数据。
 
     /**
      * 写数据 读线程被阻塞

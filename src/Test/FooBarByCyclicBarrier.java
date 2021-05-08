@@ -1,21 +1,22 @@
 package Test;
 
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class FooBar {
+public class FooBarByCyclicBarrier {
     private int n;
 
-    private static boolean state = true;
-    ReentrantLock lock = new ReentrantLock();
-    Condition condition = lock.newCondition();
+    CyclicBarrier cb = new CyclicBarrier(2);
+    volatile boolean fin = true;
 
-    public FooBar(int n) {
+    public FooBarByCyclicBarrier(int n) {
         this.n = n;
     }
 
     public static void main(String[] args) {
-        FooBar fooBar = new FooBar(5);
+        FooBarByCyclicBarrier fooBar = new FooBarByCyclicBarrier(5);
         new Thread(() -> {
             try {
                 fooBar.foo(() -> {
@@ -39,37 +40,33 @@ public class FooBar {
     public void foo(Runnable printFoo) throws InterruptedException {
 
         for (int i = 0; i < n; i++) {
-            try {
-                lock.lock();
-                if (!state){
-                    condition.await();
-                }
-                // printFoo.run() outputs "foo". Do not change or remove this line.
-                printFoo.run();
-                state = false;
-                condition.signal();
-            } finally {
-                lock.unlock();
+            while (!fin){
+
             }
+            fin = false;
+            // printFoo.run() outputs "foo". Do not change or remove this line.
+            printFoo.run();
+            try {
+                cb.await();
+            } catch (BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
     public void bar(Runnable printBar) throws InterruptedException {
 
         for (int i = 0; i < n; i++) {
+            // 直到上一次foo打印 执行cb.await()
             try {
-                lock.lock();
-                if (state){
-                    condition.await();
-                }
-                // printBar.run() outputs "bar". Do not change or remove this line.
-                printBar.run();
-                state = true;
-                condition.signal();
-            } finally {
-                lock.unlock();
+                cb.await();
+            } catch (BrokenBarrierException e) {
+                e.printStackTrace();
             }
-
+            // printBar.run() outputs "bar". Do not change or remove this line.
+            printBar.run();
+            fin = true;
         }
     }
 }

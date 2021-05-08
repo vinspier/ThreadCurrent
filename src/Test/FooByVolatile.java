@@ -1,21 +1,15 @@
 package Test;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+public class FooByVolatile {
 
-public class Foo {
+    public volatile int state = 1;
 
-    private static int state = 1;
-    ReentrantLock lock = new ReentrantLock();
-    Condition condition2 = lock.newCondition();
-    Condition condition3 = lock.newCondition();
-
-    public Foo() {
+    public FooByVolatile() {
 
     }
 
     public static void main(String[] args) {
-        Foo foo = new Foo();
+        FooByVolatile foo = new FooByVolatile();
         new Thread(() -> {
             try {
                 foo.first(() -> {
@@ -47,39 +41,39 @@ public class Foo {
 
 
     public void first(Runnable printFirst) throws InterruptedException {
-        // 第一个线程 无需等待
-        // printFirst.run() outputs "first". Do not change or remove this line.
-        printFirst.run();//
-        state = 2;
-        condition2.signal();
-    }
-
-    public void second(Runnable printSecond) throws InterruptedException {
-        try {
-            lock.lock();
-            if (state != 2){
-                condition2.await();
+        for (;;){
+            int stateCopy = this.state;
+            if (stateCopy == 1){
+                // printFirst.run() outputs "first". Do not change or remove this line.
+                printFirst.run();//
+                state = 2;
+                break;
             }
-            // printSecond.run() outputs "second". Do not change or remove this line.
-            printSecond.run();
-            state = 3;
-            condition3.signal();
-        } finally {
-            lock.unlock();
         }
     }
 
-    public void third(Runnable printThird) throws InterruptedException {
-        try {
-            lock.lock();
-            if (state != 3){
-                condition3.await();
+    public void second(Runnable printSecond) throws InterruptedException {
+        for (;;) {
+            int stateCopy = this.state;
+            if (stateCopy == 2) {
+                // printSecond.run() outputs "second". Do not change or remove this line.
+                printSecond.run();
+                state = 3;
+                break;
             }
-            // printThird.run() outputs "third". Do not change or remove this line.
-            printThird.run();
-            state = 1;
-        } finally {
-            lock.unlock();
+        }
+
+    }
+
+    public void third(Runnable printThird) throws InterruptedException {
+        for (;;) {
+            int stateCopy = this.state;
+            if (stateCopy == 3) {
+                // printThird.run() outputs "third". Do not change or remove this line.
+                printThird.run();
+                state = 1;
+                break;
+            }
         }
     }
 }

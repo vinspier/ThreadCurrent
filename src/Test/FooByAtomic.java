@@ -1,21 +1,18 @@
 package Test;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class Foo {
+public class FooByAtomic {
 
-    private static int state = 1;
-    ReentrantLock lock = new ReentrantLock();
-    Condition condition2 = lock.newCondition();
-    Condition condition3 = lock.newCondition();
+    private AtomicInteger firstJob = new AtomicInteger(0);
+    private AtomicInteger secondJob = new AtomicInteger(0);
 
-    public Foo() {
+    public FooByAtomic() {
 
     }
 
     public static void main(String[] args) {
-        Foo foo = new Foo();
+        FooByAtomic foo = new FooByAtomic();
         new Thread(() -> {
             try {
                 foo.first(() -> {
@@ -47,39 +44,25 @@ public class Foo {
 
 
     public void first(Runnable printFirst) throws InterruptedException {
-        // 第一个线程 无需等待
         // printFirst.run() outputs "first". Do not change or remove this line.
-        printFirst.run();//
-        state = 2;
-        condition2.signal();
+        printFirst.run();
+        firstJob.incrementAndGet();
     }
 
     public void second(Runnable printSecond) throws InterruptedException {
-        try {
-            lock.lock();
-            if (state != 2){
-                condition2.await();
-            }
+        while (firstJob.get() != 1) {
             // printSecond.run() outputs "second". Do not change or remove this line.
-            printSecond.run();
-            state = 3;
-            condition3.signal();
-        } finally {
-            lock.unlock();
         }
+        printSecond.run();
+        secondJob.incrementAndGet();
+
     }
 
     public void third(Runnable printThird) throws InterruptedException {
-        try {
-            lock.lock();
-            if (state != 3){
-                condition3.await();
-            }
+        while (secondJob.get() != 1) {
             // printThird.run() outputs "third". Do not change or remove this line.
-            printThird.run();
-            state = 1;
-        } finally {
-            lock.unlock();
         }
+        printThird.run();
+        secondJob.incrementAndGet();
     }
 }
