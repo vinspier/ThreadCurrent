@@ -76,7 +76,6 @@ public class ZeroEvenOddByLock {
         for (int i = 2; i <= n; i += 2) {
             lock.lock();
             try {
-
                 if (state != 2){
                     condition2.await();
                 }
